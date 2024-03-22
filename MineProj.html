@@ -1,0 +1,163 @@
+<!Doctype html>
+<html lang="pt-br">
+
+<head>
+    <title>"Mine projeto"</title>
+    <meta charset="UTF-8">
+</head>
+
+<body>
+    <script>
+        class Produto {
+            constructor(codigo, nome, preco, descricao) {
+                this.codigo = codigo;
+                this.nome = nome;
+                this.preco = preco;
+                this.descricao = descricao;
+                this.ativo = true;
+            }
+        }
+
+        function adicionarProduto(produtos, produtoNovo){
+            produtos.push(produtoNovo);
+        }
+
+        function exibirProdutosAtivos(produtos){
+            produtos.forEach(produto => {
+                if (produto.ativo == true) {
+                    alert(`CÓDIGO: ${produto.codigo} \nNOME: ${produto.nome} \nPRECO: ${produto.preco} \nDESCRIÇÃO: ${produto.descricao} \n`)
+                }
+            })
+        }
+
+        function exibirProdutoAtivo(produtos, codigoBusca) {
+            produtos.forEach(produto => {
+                if (produto.ativo == true) {
+                    if (produto.codigo == codigoBusca) {
+                        alert(`CÓDIGO: ${produto.codigo} NOME: ${produto.nome} PRECO: ${produto.preco} DESCRIÇÃO: ${produto.descricao}\n`)
+                    }
+                }
+            })
+        }
+
+        function atualizarProduto(produtos, codigoBusca, nomeNovo, precoNovo, descricaoNova) {
+            produtos.forEach(produto => {
+                if (produto.codigo == codigoBusca) {
+                    produto.nome = nomeNovo;
+                    produto.preco = precoNovo;
+                    produto.descricao = descricaoNova;
+                }
+            })
+        }
+
+        function excluirProduto(produtos, codigoBusca) {
+            produtos.forEach(produto => {
+                if (produto.codigo == codigoBusca) {
+                    produto.ativo = false
+                }
+            })
+        }
+
+        function existeProdutosCadastrados(produtos) {
+            if (produtos.length != 0) {
+                return true
+            }
+            return false
+        }
+
+        function existeCodigoCadastrado(produtos, codigoTeste) {
+            for (var i = 0; i < produtos.length; i++) {
+                if (produtos[i].codigo == codigoTeste) {
+                    return true
+                }
+            }
+            return false
+        }
+
+        var produtos = [];
+        alert("Catalogo de Produtos")
+
+        do {
+            var escolha = prompt("MENU - Escolha um das opções: \n 1- Adicionar \n 2- Visualizar \n 3- Buscar \n 4- Atualizar \n 5- Excluir \n 0- Sair")
+
+            //ADICIONAR PRODUTOS
+            if (escolha == 1) {
+                const codigo = prompt("Digite o codigo de identificação do novo produto: ")
+                const nome = prompt("Digite o nome do novo produto: ")
+                const preco = prompt("Digite o valor do novo produto")
+                const descricao = prompt("Digite uma breve descrição para o novo produto: ")
+
+                const produtoNovo = new Produto(codigo, nome, preco, descricao)
+
+                if (existeCodigoCadastrado(produtos, codigo) == false) {
+                    adicionarProduto(produtos, produtoNovo)
+                    alert("Produto cadastrado com sucesso")
+                } else {
+                    alert("Código já cadastrado \n Cadastrameto Cancelado")
+                }
+            }
+            
+            //VISUALIZAR TODOS OS PRODUTOS ATIVOS
+            else if (escolha == 2) {
+                if (existeProdutosCadastrados(produtos)) {
+                    alert("Produtos do catálogo")
+                    exibirProdutosAtivos(produtos)
+                } else {
+                    alert("Não existe produtos cadastrados")
+                }
+            }
+
+            //BUSCAR PRODUTO ESPECÍFICO
+            else if (escolha == 3) {
+                if (existeProdutosCadastrados(produtos)) {
+                    const codigoBusca = prompt("Digite o codigo do produto procurado")
+                    if (existeCodigoCadastrado(produtos, codigoBusca)) {
+                        exibirProdutoAtivo(produtos, codigoBusca)
+                    } else {
+                        alert("Produto não encontrado")
+                    }
+                } else {
+                    alert("Não existe produtos cadastrados")
+                }
+            }
+
+            //ATUALIZAR PRODUTO
+            else if (escolha == 4) {
+                if (existeProdutosCadastrados(produtos)) {
+                    var codigoBusca = prompt("Digite o codigo do produto que deseja atualizar: ")
+                    if (existeCodigoCadastrado(produtos, codigoBusca)) {
+                        var nomeNovo = prompt("Digite o novo nome do produto: ")
+                        var precoNovo = prompt("Digite o novo preco do produto: ")
+                        var descricaoNova = prompt("Digite a nova descrição do produto: ")
+                        
+                        atualizarProduto(produtos, codigoBusca, nomeNovo, precoNovo, descricaoNova)
+                        alert("Produto atualizado com sucesso")
+                    } else {
+                        alert("Produto não encontrado")
+                    }
+                } else {
+                    alert("Não existe produtos cadastrados")
+                }
+            }
+
+            //EXCLUIR PRODUTO
+            else if (escolha == 5) {
+                if (existeProdutosCadastrados(produtos)) {
+                    var codigoBusca = prompt("Digite o codigo do produto para exclusão: ")
+                    if (existeCodigoCadastrado(produtos, codigoBusca)) {
+                        excluirProduto(produtos, codigoBusca)
+                        alert("produto excluido com sucesso")
+                    } else {
+                        alert("Produto não encontrado")
+                    }
+                } else {
+                    alert("Não existe produtos cadastrados")
+                }
+            }
+
+        } while (escolha != 0)
+
+    </script>
+</body>
+
+</html>
